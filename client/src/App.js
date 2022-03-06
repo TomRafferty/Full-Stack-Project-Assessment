@@ -22,6 +22,10 @@ function App() {
       });
   }, [dataClone]);
 
+  const updateVote = () => {
+
+  }
+
   const removeIndex = (id) => {
     fetch(`http://localhost:5000/${id}`, {method:"delete"})
     .catch((error) => {
@@ -33,7 +37,6 @@ function App() {
   };
   
   const addVideoFromInput = (userInput) => {
-    console.log(userInput);
     const requestOptions = {
       method: "POST",
       headers: {

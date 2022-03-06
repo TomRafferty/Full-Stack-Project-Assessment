@@ -11,10 +11,9 @@ const VideoComponent = (props) => {
         <iframe
           width="560"
           height="315"
-          // the commented out version allows the videos to run but youtube gets upset when
-          // you ask for so much :P
+          //the url will serve as a unique identifier and there will have to be a rule
+          //to not allow multiple of the same video added (backend)
           src={props.video.url.replace("watch?v=", "embed/")}
-          // src={video.url}
           title={props.video.title}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

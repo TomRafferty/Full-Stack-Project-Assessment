@@ -77,22 +77,37 @@ app.post("/", (req, res) => {
   const body = req.body;
   pool.connect().then((client) => {
     return client
-      .query(
-        `
-        INSERT INTO videos (title, url)
-        VALUES ($1, $2);
-        `,
-        [body.title, body.url]
-      )
-      .then(() => {
-        client.release();
-        res.send(`Successfully added your video.`);
-      })
-      .catch((error) => {
-        client.release();
-        console.error(error);
-        // res.status(error.status).send(error);
-      })
+    .query(
+      `
+      SELECT * FROM videos
+      WHERE url=$1;
+      `,
+      [body.url]
+    ).then((result) => {
+      console.log(result.rowCount);
+      if(result.rowCount === 0){
+        client
+          .query(
+            `
+            INSERT INTO videos (title, url, rating)
+            VALUES ($1, $2, 0);
+            `,
+            [body.title, body.url]
+            )
+            .then(() => {
+              client.release();
+              res.send(`Successfully added your video.`);
+            })
+            .catch((error) => {
+              client.release();
+              console.error(error);
+              // res.status(error.status).send(error);
+            });
+      }
+      else{
+        res.status(400).send(`This video already exists in the database.`);
+      }
+    })
   })
 })
 
